@@ -1,0 +1,86 @@
+# Control Operativo Smart — Backend (`core`)
+
+Backend desarrollado con **Python**, **Django** y **Django REST Framework** para el proyecto **Control Operativo Smart**, una plataforma orientada a la gestión de inventarios y punto de venta (POS) con módulos analíticos basados en **cálculo integral** (demanda acumulada, estimación de agotamiento de stock y análisis de tasas/acumulados en el tiempo).
+
+---
+
+## Estructura de carpetas
+
+```text
+core/
+├── .gitignore
+├── requirements.txt
+├── README.md
+├── manage.py
+├── core/
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+└── inventario/
+    ├── __init__.py
+    ├── admin.py
+    ├── apps.py
+    ├── migrations/
+    │   └── __init__.py
+    ├── models.py
+    ├── tests.py
+    ├── urls.py
+    └── views.py
+```
+
+---
+
+## Cómo correr el proyecto en tu máquina local
+
+### 1. Clonar el repositorio y entrar a la carpeta
+```bash
+git clone <URL_DE_TU_NUEVO_REPO_BACKEND>
+cd core
+```
+
+### 2. Crear y activar el entorno virtual (`.venv`)
+
+**Windows (PowerShell):**
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+**macOS / Linux:**
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 3. Instalar dependencias
+Con el entorno virtual `.venv` activado:
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### 4. Aplicar migraciones y crear superusuario
+```bash
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+```
+
+### 5. Levantar el servidor de desarrollo
+```bash
+python manage.py runserver
+```
+
+El servidor quedará disponible en:
+- API base: `http://127.0.0.1:8000/api/`
+- Panel de administración: `http://127.0.0.1:8000/admin/`
+
+---
+
+## Notas para desarrollo y conexión con React
+- Asegúrate de tener `corsheaders` en `INSTALLED_APPS` y su middleware configurado en `core/settings.py` para permitir las peticiones desde tu frontend en React (por ejemplo, `http://localhost:5173`).
+- El módulo de cálculo integral se implementará en el backend tomando series históricas de ventas/demanda para calcular acumulados y tiempos estimados de agotamiento y exponerlos mediante endpoints de DRF.
+
+
