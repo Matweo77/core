@@ -31,6 +31,8 @@ core/
 ```
 
 ---
+NOTA:
+Requiere Python 3.11 o superior (probado en Python 3.13). Cada integrante debe crear su propio entorno virtual .venv e instalar requirements.txt.
 
 ## Cómo correr el proyecto en tu máquina local
 
