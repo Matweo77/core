@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Producto
 from .serializers import ProductoSerializer
-
+from .calculo import calcular_integral_general, calcular_integral_producto
 
 @api_view(["GET"])
 def health_check(request):
@@ -46,3 +46,20 @@ def listar_productos(request):
     productos = Producto.objects.prefetch_related("registros_demanda").all()
     serializer = ProductoSerializer(productos, many=True)
     return Response(serializer.data)
+
+
+@api_view(["GET"])
+def calculo_inventario(request):
+    try:
+        dias = int(request.query_params.get("dias", 7))
+    except (TypeError, ValueError):
+        dias = 7
+
+    producto_id = request.query_params.get("producto_id")
+    if producto_id:
+        producto = Producto.objects.prefetch_related("registros_demanda").filter(id=producto_id).first()
+        if not producto:
+            return Response({"error": "Producto no encontrado"}, status=404)
+        return Response(calcular_integral_producto(producto, horizonte_dias=dias))
+
+    return Response(calcular_integral_general(horizonte_dias=dias))
